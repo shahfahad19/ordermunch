@@ -9,7 +9,7 @@ router
     // for getting all orders
     .get(auth.protect, orderController.getAllOrders)
     // post request for creating a new order (allowing user to place order only)
-    .post(auth.protect, orderController.createOrder);
+    .post(auth.protect, auth.restrictTo('user'), orderController.createOrder);
 
 router
     .route('/:id')
