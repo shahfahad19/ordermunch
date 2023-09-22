@@ -13,13 +13,10 @@ const restaurantRouter = require('./routes/restaurantRoutes');
 const itemRouter = require('./routes/itemRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const cartRouter = require('./routes/cartRoutes');
+const path = require('path');
 
 app.use(cors());
 app.use(express.json());
-
-app.get('/', (req, res) => {
-    res.end('API is running');
-});
 
 app.get('/api/overview', getOverView);
 app.use('/api/auth', authRouter);
@@ -28,6 +25,14 @@ app.use('/api/cart', cartRouter);
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/items', itemRouter);
 app.use('/api/orders', orderRouter);
+
+// Serve static files from the "build" directory
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// For any other route, send the index.html file
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.use(globalErrorHandler);
 
