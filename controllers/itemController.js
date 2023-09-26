@@ -18,9 +18,7 @@ exports.getAllItems = catchAsync(async (req, res) => {
         pages,
         count: totalCount,
         results: items.length,
-        data: {
-            items,
-        },
+        items,
     });
 });
 
@@ -28,9 +26,7 @@ exports.createItem = catchAsync(async (req, res, next) => {
     const item = await Item.create(req.body);
     res.status(201).json({
         status: 'success',
-        data: {
-            item,
-        },
+        item,
     });
 });
 
@@ -59,11 +55,9 @@ exports.getItem = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            sales: totalSales,
-            amount: totalAmount,
-            item,
-        },
+        sales: totalSales,
+        amount: totalAmount,
+        item,
     });
 });
 
@@ -78,9 +72,7 @@ exports.updateItem = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
-        data: {
-            item,
-        },
+        item,
     });
 });
 

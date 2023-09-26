@@ -25,10 +25,8 @@ exports.getCart = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            cart: user.cart,
-            amount,
-        },
+        cart: user.cart,
+        amount,
     });
 });
 
@@ -79,10 +77,8 @@ exports.addItemToCart = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            cart: updatedUser.cart,
-            amount,
-        },
+        cart: updatedUser.cart,
+        amount,
     });
 });
 
@@ -127,10 +123,8 @@ exports.removeItemFromCart = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            cart: updatedUser.cart,
-            amount,
-        },
+        cart: updatedUser.cart,
+        amount,
     });
 });
 
@@ -170,10 +164,8 @@ exports.deleteItemFromCart = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            cart: updatedUser.cart,
-            amount,
-        },
+        cart: updatedUser.cart,
+        amount,
     });
 });
 
@@ -242,9 +234,7 @@ exports.checkOutCart = catchAsync(async (req, res, next) => {
 
         res.status(201).json({
             status: 'success',
-            data: {
-                order,
-            },
+            order,
         });
     } catch (error) {
         return next(error);
@@ -258,8 +248,6 @@ exports.clearCart = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
-        data: {
-            cart: user.cart,
-        },
+        cart: user.cart,
     });
 });

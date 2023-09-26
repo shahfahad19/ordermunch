@@ -18,9 +18,7 @@ exports.getAllOrders = catchAsync(async (req, res) => {
         pages,
         count: totalCount,
         results: orders.length,
-        data: {
-            orders,
-        },
+        orders,
     });
 });
 
@@ -95,9 +93,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
         status: 'success',
-        data: {
-            order,
-        },
+        order,
     });
 });
 
@@ -110,9 +106,7 @@ exports.getOrder = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            order,
-        },
+        order,
     });
 });
 
@@ -127,9 +121,7 @@ exports.updateOrder = async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
-        data: {
-            order: updatedOrder,
-        },
+        order: updatedOrder,
     });
 };
 
@@ -185,11 +177,9 @@ exports.getRestaurantOrders = catchAsync(async (req, res) => {
         pages,
         count: totalCount,
         results: orders.length,
-        data: {
-            total_sales: totalSales,
-            sales_amount: totalSalesBalance,
-            orders,
-        },
+        total_sales: totalSales,
+        sales_amount: totalSalesBalance,
+        orders,
     });
 });
 
@@ -230,10 +220,8 @@ exports.getItemOrders = catchAsync(async (req, res) => {
         pages,
         count: totalCount,
         results: orders.length,
-        data: {
-            total_sales: totalSales,
-            sales_amount: totalSalesBalance,
-            orders,
-        },
+        total_sales: totalSales,
+        sales_amount: totalSalesBalance,
+        orders,
     });
 });

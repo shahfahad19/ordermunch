@@ -19,9 +19,7 @@ exports.getAllRestaurants = catchAsync(async (req, res) => {
         pages,
         count: totalCount,
         results: restaurants.length,
-        data: {
-            restaurants,
-        },
+        restaurants,
     });
 });
 
@@ -29,9 +27,7 @@ exports.createRestaurant = catchAsync(async (req, res, next) => {
     const restaurant = await Restaurant.create(req.body);
     res.status(201).json({
         status: 'success',
-        data: {
-            restaurant,
-        },
+        restaurant,
     });
 });
 
@@ -60,12 +56,10 @@ exports.getRestaurant = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            items: items,
-            sales: totalSales,
-            amount: totalAmount,
-            restaurant,
-        },
+        items: items,
+        sales: totalSales,
+        amount: totalAmount,
+        restaurant,
     });
 });
 
@@ -79,9 +73,7 @@ exports.updateRestaurant = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
-        data: {
-            restaurant: updatedRestaurant,
-        },
+        restaurant: updatedRestaurant,
     });
 });
 

@@ -27,12 +27,10 @@ exports.getOverView = catchAsync(async (req, res) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            items: items,
-            sales: totalSales,
-            amount: totalAmount,
-            restaurants,
-            customers,
-        },
+        items: items,
+        sales: totalSales,
+        amount: totalAmount,
+        restaurants,
+        customers,
     });
 });

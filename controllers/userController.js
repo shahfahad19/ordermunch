@@ -19,9 +19,7 @@ exports.getAllUsers = catchAsync(async (req, res) => {
         count: totalCount,
         pages,
         results: users.length,
-        data: {
-            users,
-        },
+        users,
     });
 });
 
@@ -32,9 +30,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
-        data: {
-            user,
-        },
+        user,
     });
 });
 
@@ -62,9 +58,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            user: updatedUser,
-        },
+        user: updatedUser,
     });
 });
 
@@ -87,10 +81,8 @@ exports.getCustomer = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: {
-            orders: totalOrders,
-            amount: totalAmount,
-            customer,
-        },
+        orders: totalOrders,
+        amount: totalAmount,
+        customer,
     });
 });
