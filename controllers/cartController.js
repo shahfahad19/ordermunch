@@ -6,7 +6,7 @@ const Order = require('../models/orderModel');
 const mongoose = require('mongoose');
 
 exports.getCart = catchAsync(async (req, res, next) => {
-    const user = await User.findById(req.user._id).populate('cart.item');
+    const user = await User.findById(req.user._id).populate({ path: 'cart.item', populate: 'restaurant' });
     if (!user) {
         return next(new AppError('User not found', 404));
     }
@@ -65,7 +65,7 @@ exports.addItemToCart = catchAsync(async (req, res, next) => {
     // Save the updated user document
     await user.save({ validateBeforeSave: false });
 
-    const updatedUser = await User.findById(req.user._id).populate('cart.item');
+    const updatedUser = await User.findById(req.user._id).populate({ path: 'cart.item', populate: 'restaurant' });
     updatedUser.cart = updatedUser.cart.filter((cartItem) => cartItem.item !== null);
 
     let amount = 0;
@@ -111,7 +111,7 @@ exports.removeItemFromCart = catchAsync(async (req, res, next) => {
         await user.save({ validateBeforeSave: false });
     }
 
-    const updatedUser = await User.findById(req.user._id).populate('cart.item');
+    const updatedUser = await User.findById(req.user._id).populate({ path: 'cart.item', populate: 'restaurant' });
     updatedUser.cart = updatedUser.cart.filter((cartItem) => cartItem.item !== null);
 
     let amount = 0;
@@ -152,7 +152,7 @@ exports.deleteItemFromCart = catchAsync(async (req, res, next) => {
         await user.save({ validateBeforeSave: false });
     }
 
-    const updatedUser = await User.findById(req.user._id).populate('cart.item');
+    const updatedUser = await User.findById(req.user._id).populate({ path: 'cart.item', populate: 'restaurant' });
     updatedUser.cart = updatedUser.cart.filter((cartItem) => cartItem.item !== null);
 
     let amount = 0;
