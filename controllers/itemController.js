@@ -32,7 +32,7 @@ exports.createItem = catchAsync(async (req, res, next) => {
 
 exports.getItem = catchAsync(async (req, res, next) => {
     const itemId = req.params.id;
-    const item = await Item.findById(itemId);
+    const item = await Item.findById(itemId).populate('restaurant');
     if (!item) return next(new AppError('Item not found', 404));
 
     // getting all orders of this item
