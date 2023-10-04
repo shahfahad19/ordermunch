@@ -26,12 +26,12 @@ app.use('/api/restaurants', restaurantRouter);
 app.use('/api/items', itemRouter);
 app.use('/api/orders', orderRouter);
 
-// Serve static files from the "build" directory
-app.use(express.static(path.join(__dirname, 'dist')));
+// Serve static files from the "frontend/dist" directory
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
 // For any other route, send the index.html file
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
 });
 
 app.use(globalErrorHandler);
