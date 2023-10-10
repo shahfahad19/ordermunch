@@ -8,7 +8,11 @@ const mongoose = require('mongoose');
 exports.getAllOrders = catchAsync(async (req, res) => {
     const limit = req.query.limit || 30;
     const features = new APIFeatures(Order.find(), req.query).filter().sort().limit().paginate();
-    const orders = await features.query.populate('placed_by');
+    const orders = await features.query.populate({
+        path: 'items.item', populate: {
+            path: 'restaurant', model: 'Restaurant'
+        }
+    }).populate('placed_by');
 
     const totalCount = await Order.countDocuments();
     const pages = Math.ceil(totalCount / limit);
@@ -98,7 +102,11 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 });
 
 exports.getOrder = catchAsync(async (req, res, next) => {
-    const order = await Order.findById(req.params.id).populate('placed_by');
+    const order = await Order.findById(req.params.id).populate({
+        path: 'items.item', populate: {
+            path: 'restaurant', model: 'Restaurant'
+        }
+    }).populate('placed_by');
 
     if (!order) {
         return next(new AppError('Order not found', 404));
