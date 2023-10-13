@@ -20,6 +20,8 @@ exports.createReview = catchAsync(async (req, res, next) => {
     const existingReview = await Review.findOne({ order, item });
     if (existingReview) return next(new AppError("Item is already reviewed", 400));
 
+    if (existingOrder.status !== 'Completed') return next(new AppError("Order not completed yet", 400));
+
 
     // Create the review
     const newReview = await Review.create({
@@ -42,10 +44,9 @@ exports.createReview = catchAsync(async (req, res, next) => {
 });
 
 
-exports.getReviews = catchAsync(async (req, res) => {
-
+exports.getReviews = catchAsync(async (req, res, next) => {
     const features = new APIFeatures(Review.find(), req.query).filter().sort().limit().paginate();
-    const reviews = await features.query.populate('posted_by').populate('item');
+    const reviews = await features.query.populate({ path: 'posted_by', select: 'name' }).populate('item');
 
     res.status(200).json({
         status: 'success',
@@ -62,20 +63,10 @@ exports.updateReview = catchAsync(async (req, res) => {
     // Find the review by ID
     const existingReview = await Review.findById(reviewId);
 
-    if (!existingReview) {
-        return res.status(404).json({
-            status: 'error',
-            message: 'Review not found.',
-        });
-    }
+    if (!existingReview) return next(new AppError('Review not found', 404));
 
     // Ensure that the user updating the review is the same user who posted it
-    if (existingReview.posted_by.toString() !== req.user._id) {
-        return res.status(403).json({
-            status: 'error',
-            message: 'You are not authorized to update this review.',
-        });
-    }
+    if (existingReview.posted_by.toString() !== req.user._id) return next(new AppError('You are not authorized to update this review.', 400));
 
     // Update review content and star rating
     existingReview.review = review || existingReview.review;

@@ -42,9 +42,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
     if (req.body.email) {
         if (!validator.isEmail(req.body.email)) return next(new AppError('Email is invalid'), 400);
-
-        const existingUserWithEmail = await User.findOne({ email: req.body.email });
-        if (existingUserWithEmail) return next(new AppError('Email is already in use'), 400);
     }
 
     // Removing fields
