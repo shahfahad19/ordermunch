@@ -190,55 +190,57 @@ exports.checkOutCart = catchAsync(async (req, res, next) => {
     // Extract item IDs from the itemIdsWithCounts array
     const itemIds = itemIdsWithCounts.map((item) => item.id);
 
-    try {
-        // Check if all items exist in the database
-        const existingItems = await Item.find({ _id: { $in: itemIds } });
+    // Check if all items exist in the database
+    const existingItems = await Item.find({ _id: { $in: itemIds } });
 
-        if (existingItems.length !== itemIds.length) {
-            // Not all items exist in the database
-            return next(new AppError('One or more items in the cart do not exist', 400));
-        }
-
-        // repalce item ids by item details
-        let refactoredItems = user.cart;
-
-        user.cart.forEach((item, index) => {
-            refactoredItems[index].item = existingItems[index];
-        });
-
-        // set req.body.items to refactored items
-        req.body.items = refactoredItems;
-
-        // Calculate the total amount and total items
-        const totalAmount = existingItems.reduce((total, item) => {
-            const cartItem = itemIdsWithCounts.find((cartItem) => cartItem.id.equals(item._id));
-            return total + item.price * cartItem.count;
-        }, 0);
-
-        const totalItems = cartItems.reduce((total, cartItem) => total + cartItem.count, 0);
-
-        // Add the calculated total amount and total items to the request body
-        req.body.amount = totalAmount;
-        req.body.items_count = totalItems;
-
-        // Add user id to placed_by field
-        req.body.placed_by = req.user._id;
-
-        // Create order
-        const order = await Order.create(req.body);
-
-        user.cart = [];
-        await user.save({
-            validateBeforeSave: false,
-        });
-
-        res.status(201).json({
-            status: 'success',
-            order,
-        });
-    } catch (error) {
-        return next(error);
+    if (existingItems.length !== itemIds.length) {
+        // Not all items exist in the database
+        return next(new AppError('One or more items in the cart do not exist', 400));
     }
+
+    // repalce item ids by item details
+    let refactoredItems = user.cart;
+
+    user.cart.forEach((item, index) => {
+        refactoredItems[index].item = existingItems[index];
+    });
+
+    // set req.body.items to refactored items
+    req.body.items = refactoredItems;
+
+    // Calculate the total amount and total items
+    const totalAmount = existingItems.reduce((total, item) => {
+        const cartItem = itemIdsWithCounts.find((cartItem) => cartItem.id.equals(item._id));
+        return total + item.price * cartItem.count;
+    }, 0);
+
+    const totalItems = cartItems.reduce((total, cartItem) => total + cartItem.count, 0);
+
+    // Add the calculated total amount and total items to the request body
+    req.body.amount = totalAmount;
+    req.body.items_count = totalItems;
+
+    // Add user id to placed_by field
+    req.body.placed_by = req.user._id;
+
+    // Create order
+    const order = await Order.create(req.body);
+
+    const newOrder = await Order.findById(order._id).populate({
+        path: 'items.item', populate: {
+            path: 'restaurant', model: 'Restaurant'
+        }
+    }).populate('placed_by');
+
+    user.cart = [];
+    await user.save({
+        validateBeforeSave: false,
+    });
+
+    res.status(201).json({
+        status: 'success',
+        order: newOrder,
+    });
 });
 
 exports.clearCart = catchAsync(async (req, res, next) => {
