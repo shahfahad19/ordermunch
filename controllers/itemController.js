@@ -102,24 +102,17 @@ exports.getItem = catchAsync(async (req, res, next) => {
 
     const averageRating = reviewCount > 0 ? totalRating / reviewCount : 0;
 
-    // Include average rating within the item object
-    item.rating = averageRating;
-    item.rated_by = reviewCount
-
-    console.log(reviewCount, averageRating)
     const updatedItem = {
         ...item.toObject(),
         rating: averageRating,
         rated_by: reviewCount
 
     }
-    console.log(updatedItem)
     res.status(200).json({
         status: 'success',
         sales: totalSales,
         amount: totalAmount,
         item: updatedItem,
-        reviews, // Include the reviews in the response
     });
 });
 
