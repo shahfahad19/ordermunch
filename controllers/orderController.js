@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 
 exports.getAllOrders = catchAsync(async (req, res) => {
     const limit = req.query.limit || 30;
+    const sort_by = "-date" || req.query.sort;
+    req.query.sort = sort_by;
     const features = new APIFeatures(Order.find(), req.query).filter().sort().limit().paginate();
     const orders = await features.query.populate({
         path: 'items.item', populate: {
