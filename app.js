@@ -13,6 +13,8 @@ const restaurantRouter = require('./routes/restaurantRoutes');
 const itemRouter = require('./routes/itemRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const cartRouter = require('./routes/cartRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
+
 const path = require('path');
 
 app.use(cors());
@@ -25,6 +27,8 @@ app.use('/api/cart', cartRouter);
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/items', itemRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/reviews', reviewRouter);
+
 
 // Serve static files from the "frontend/dist" directory
 app.use(express.static(path.join(__dirname, 'frontend/dist')));

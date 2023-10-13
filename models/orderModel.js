@@ -36,20 +36,7 @@ const orderSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: true,
-    },
-    rating: {
-        type: Number,
-        min: 1,
-        max: 5,
-    },
-    review: {
-        type: String,
-        default: '',
-    },
-    rated: {
-        type: Boolean,
-        default: false,
-    },
+    }
 });
 
 const Order = mongoose.model('Order', orderSchema);

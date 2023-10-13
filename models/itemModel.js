@@ -25,17 +25,7 @@ const itemSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: [true, 'An order must have a price field.'],
-    },
-    rating: {
-        type: Number,
-        default: 0,
-        min: 0,
-        max: 5,
-    },
-    rated_by: {
-        type: Number,
-        default: 0,
-    },
+    }
 });
 
 const Item = mongoose.model('Item', itemSchema);

@@ -16,6 +16,7 @@ import ViewItem from './Components/Entities/Item/ViewItem';
 import ItemOverview from './Components/Entities/Item/ItemOverview';
 import ViewCustomer from './Components/Entities/Customer/ViewCustomer';
 import CustomerOverview from './Components/Entities/Customer/CustomerOverview';
+import ReviewList from './Components/Entities/Reviews/ReviewList';
 const router = createBrowserRouter([
     {
         path: '/',
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
                                 path: 'orders',
                                 element: <OrderList />,
                             },
+                            {
+                                path: 'reviews',
+                                element: <ReviewList />,
+                            },
                         ],
                     },
                     {
@@ -95,6 +100,10 @@ const router = createBrowserRouter([
                             {
                                 path: 'orders',
                                 element: <OrderList />,
+                            },
+                            {
+                                path: 'reviews',
+                                element: <ReviewList />,
                             },
                         ],
                     },

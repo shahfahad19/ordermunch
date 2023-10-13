@@ -12,6 +12,8 @@ const CustomerSidebar = () => {
 
         if (path.includes('/orders')) {
             setActive('Orders');
+        } else if (path.includes('/reviews')) {
+            setActive('Reviews');
         } else {
             setActive('Stats');
         }
@@ -84,6 +86,28 @@ const CustomerSidebar = () => {
                                 </svg>
                             </span>
                             <span className='ml-2 text-sm tracking-wide truncate'>Orders</span>
+                        </span>
+                    </li>
+                    <li onClick={() => openPage('reviews')}>
+                        <span
+                            className={`cursor-pointer relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6 ${
+                                active === 'Reviews'
+                                    ? 'bg-backgroundSecondary text-blue-800 hover:text-white border-blue-500'
+                                    : ''
+                            }`}
+                        >
+                            <span className='inline-flex justify-center items-center ml-4'>
+                                <svg
+                                    className='w-5 h-5'
+                                    fill='currentColor'
+                                    stroke='none'
+                                    viewBox='0 0 24 24'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                >
+                                    <path d='M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM5.76282 17H20V5H4V18.3851L5.76282 17ZM8 10H16V12H8V10Z'></path>
+                                </svg>
+                            </span>
+                            <span className='ml-2 text-sm tracking-wide truncate'>Reviews</span>
                         </span>
                     </li>
 

@@ -4,6 +4,24 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Order = require('../models/orderModel');
 const mongoose = require('mongoose');
+const Review = require('../models/reviewModel');
+
+// exports.getAllItems = catchAsync(async (req, res) => {
+//     const limit = req.query.limit || 30;
+//     const features = new APIFeatures(Item.find(), req.query).filter().sort().limit().paginate();
+//     const items = await features.query.populate('restaurant');
+
+//     const totalCount = await Item.countDocuments();
+//     const pages = Math.ceil(totalCount / limit);
+
+//     res.status(200).json({
+//         status: 'success',
+//         pages,
+//         count: totalCount,
+//         results: items.length,
+//         items,
+//     });
+// });
 
 exports.getAllItems = catchAsync(async (req, res) => {
     const limit = req.query.limit || 30;
@@ -13,14 +31,30 @@ exports.getAllItems = catchAsync(async (req, res) => {
     const totalCount = await Item.countDocuments();
     const pages = Math.ceil(totalCount / limit);
 
+    // Fetch and calculate average ratings for each item
+    const itemsWithRatings = await Promise.all(items.map(async (item) => {
+        const reviews = await Review.find({ item: item._id });
+        const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0);
+        const averageRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+
+        return {
+            ...item.toObject(),
+            rating: averageRating,
+            rated_by: reviews.length
+        };
+    }));
+
     res.status(200).json({
         status: 'success',
         pages,
         count: totalCount,
-        results: items.length,
-        items,
+        results: itemsWithRatings.length,
+        items: itemsWithRatings,
     });
 });
+
+
+
 
 exports.createItem = catchAsync(async (req, res, next) => {
     const item = await Item.create(req.body);
@@ -35,12 +69,14 @@ exports.getItem = catchAsync(async (req, res, next) => {
     const item = await Item.findById(itemId).populate('restaurant');
     if (!item) return next(new AppError('Item not found', 404));
 
-    // getting all orders of this item
+    // Getting all orders of this item
     const orders = await Order.find({ 'items.item._id': new mongoose.Types.ObjectId(itemId) });
 
-    // Calculating sales and amount
+    // Calculating sales, amount, and average review rating
     let totalSales = 0;
     let totalAmount = 0;
+    let totalRating = 0;
+    let reviewCount = 0;
 
     orders.forEach((order) => {
         const itemOrder = order.items.find((item) => item.item._id.equals(itemId));
@@ -53,13 +89,40 @@ exports.getItem = catchAsync(async (req, res, next) => {
         }
     });
 
+    // Fetch reviews for the item
+    const reviews = await Review.find({ item: itemId }).populate('posted_by');
+
+    if (reviews.length > 0) {
+        reviews.forEach((review) => {
+            totalRating += review.stars;
+        });
+
+        reviewCount = reviews.length;
+    }
+
+    const averageRating = reviewCount > 0 ? totalRating / reviewCount : 0;
+
+    // Include average rating within the item object
+    item.rating = averageRating;
+    item.rated_by = reviewCount
+
+    console.log(reviewCount, averageRating)
+    const updatedItem = {
+        ...item.toObject(),
+        rating: averageRating,
+        rated_by: reviewCount
+
+    }
+    console.log(updatedItem)
     res.status(200).json({
         status: 'success',
         sales: totalSales,
         amount: totalAmount,
-        item,
+        item: updatedItem,
+        reviews, // Include the reviews in the response
     });
 });
+
 
 // updating an item by ID
 exports.updateItem = catchAsync(async (req, res, next) => {
