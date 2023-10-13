@@ -99,7 +99,7 @@ const UpdateOrderBtn = ({ order, updateOrder }) => {
                     {/* Only show cancel button if form is not in submitting state
                         This will be determined by submit button class use state */}
                     {btnState === '' && <ModalCloseBtn handler={showUpdateFormHandler} />}
-                    <ModalTitle>Add Order</ModalTitle>
+                    <ModalTitle>Update Order</ModalTitle>
                     <form style={{ minWidth: '260px' }} onSubmit={submitForm}>
                         <FormGroup>
                             <FormField>
@@ -115,6 +115,7 @@ const UpdateOrderBtn = ({ order, updateOrder }) => {
                                         <option>Confirmed</option>
                                         <option>Preparing</option>
                                         <option>Dispatched</option>
+                                        <option>Completed</option>
                                         <option>Cancelled</option>
                                     </select>
                                 </FormControl>
