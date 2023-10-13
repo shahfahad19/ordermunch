@@ -122,9 +122,14 @@ exports.getOrder = catchAsync(async (req, res, next) => {
 
 // updating an order by ID
 exports.updateOrder = async (req, res, next) => {
-    const updatedOrder = await Order.findByIdAndUpdate(req.params.id, req.body, {
+    const { status } = req.body;
+    const updatedOrder = await Order.findByIdAndUpdate(req.params.id, { status }, {
         new: true, // return the updated order
         runValidators: true, // running validators to check for schema validation
+    }).populate({
+        path: 'items.item', populate: {
+            path: 'restaurant', model: 'Restaurant'
+        }
     }).populate('placed_by');
     if (!updatedOrder) {
         return next(new AppError('Order not found', 404));
