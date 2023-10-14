@@ -35,7 +35,7 @@ exports.getAllItems = catchAsync(async (req, res) => {
     const itemsWithRatings = await Promise.all(items.map(async (item) => {
         const reviews = await Review.find({ item: item._id });
         const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0);
-        const averageRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+        const averageRating = reviews.length > 0 ? (totalStars / reviews.length).toFixed(2) : 0;
 
         return {
             ...item.toObject(),
@@ -104,7 +104,8 @@ exports.getItem = catchAsync(async (req, res, next) => {
         reviewCount = reviews.length;
     }
 
-    const averageRating = reviewCount > 0 ? totalRating / reviewCount : 0;
+    const averageRating = reviewCount > 0 ? (totalRating / reviewCount).toFixed(2) : 0;
+
 
     const updatedItem = {
         ...item.toObject(),
