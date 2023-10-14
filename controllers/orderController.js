@@ -37,7 +37,7 @@ exports.getAllOrders = catchAsync(async (req, res) => {
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 
-    if (!user.phone || !user.address)
+    if (!req.user.phone || !req.user.address)
         return next(new AppError('Update your contact details before placing order', 400));
 
 
