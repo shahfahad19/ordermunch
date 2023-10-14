@@ -153,9 +153,15 @@ exports.updateOrder = async (req, res, next) => {
     if (!updatedOrder) {
         return next(new AppError('Order not found', 404));
     }
+
+    const reviews = await Review.find({ order: order._id }).populate({
+        path: 'posted_by',
+        select: 'name'
+    });
     res.status(200).json({
         status: 'success',
         order: updatedOrder,
+        reviews
     });
 };
 
