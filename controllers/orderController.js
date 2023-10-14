@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Item = require('../models/itemModel');
 const mongoose = require('mongoose');
+const Review = require('../models/reviewModel');
 
 exports.getAllOrders = catchAsync(async (req, res) => {
     const limit = req.query.limit || 30;
@@ -114,9 +115,16 @@ exports.getOrder = catchAsync(async (req, res, next) => {
         return next(new AppError('Order not found', 404));
     }
 
+    const reviews = await Review.find({ order: order._id }).populate({
+        path: 'posted_by',
+        select: 'name'
+    });
+
+
     res.status(200).json({
         status: 'success',
         order,
+        reviews
     });
 });
 

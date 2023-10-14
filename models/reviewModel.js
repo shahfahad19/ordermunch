@@ -29,7 +29,7 @@ const reviewSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: [true, 'Review must have a user id.'],
-        },
+        }
     },
     {
         toJSON: { virtuals: true },
