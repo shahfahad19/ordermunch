@@ -57,7 +57,7 @@ exports.getReviews = catchAsync(async (req, res, next) => {
 
 
 // Update a review
-exports.updateReview = catchAsync(async (req, res) => {
+exports.updateReview = catchAsync(async (req, res, next) => {
     const reviewId = req.params.id;
     const { review, stars } = req.body;
 
@@ -67,7 +67,7 @@ exports.updateReview = catchAsync(async (req, res) => {
     if (!existingReview) return next(new AppError('Review not found', 404));
 
     // Ensure that the user updating the review is the same user who posted it
-    if (existingReview.posted_by.toString() !== req.user._id) return next(new AppError('You are not authorized to update this review.', 400));
+    if (existingReview.posted_by.toString() !== req.user._id.toString()) return next(new AppError('You are not authorized to update this review.', 400));
 
     // Update review content and star rating
     existingReview.review = review || existingReview.review;
