@@ -37,10 +37,6 @@ exports.getAllOrders = catchAsync(async (req, res) => {
 
 exports.createOrder = catchAsync(async (req, res, next) => {
 
-    if (!req.user.phone || !req.user.address)
-        return next(new AppError('Update your contact details before placing order', 400));
-
-
     if (!req.body.item) {
         return next(new AppError('No items found', 400));
     }
