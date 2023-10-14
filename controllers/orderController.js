@@ -43,9 +43,9 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     let itemsToOrder = [];
 
     // Handle single item order
-    if (req.body.item.id) {
-        const itemId = req.body.item.id;
-        const itemCount = req.body.item.count || 1; // Default to 1 if count is not provided
+    if (req.body.item) {
+        const itemId = req.body.item;
+        const itemCount = req.body.count || 1; // Default to 1 if count is not provided
 
         if (itemCount < 1) {
             return next(new AppError('Quantity must be at least 1', 400));
