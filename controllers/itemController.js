@@ -44,6 +44,9 @@ exports.getAllItems = catchAsync(async (req, res) => {
         };
     }));
 
+    // Sort the items by the highest number of rated_by (descending order)
+    itemsWithRatings.sort((a, b) => b.rated_by - a.rated_by);
+
     res.status(200).json({
         status: 'success',
         pages,
@@ -52,6 +55,7 @@ exports.getAllItems = catchAsync(async (req, res) => {
         items: itemsWithRatings,
     });
 });
+
 
 
 
