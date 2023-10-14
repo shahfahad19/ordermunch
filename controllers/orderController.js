@@ -36,6 +36,11 @@ exports.getAllOrders = catchAsync(async (req, res) => {
 });
 
 exports.createOrder = catchAsync(async (req, res, next) => {
+
+    if (!user.phone || !user.address)
+        return next(new AppError('Update your contact details before placing order', 400));
+
+
     if (!req.body.item) {
         return next(new AppError('No items found', 400));
     }
@@ -102,7 +107,11 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     };
 
     // Create the order
-    const order = await Order.create(orderData);
+    const order = await Order.create(orderData).populate({
+        path: 'items.item', populate: {
+            path: 'restaurant', model: 'Restaurant'
+        }
+    }).populate('placed_by');
 
     res.status(201).json({
         status: 'success',
