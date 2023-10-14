@@ -90,7 +90,7 @@ exports.getItem = catchAsync(async (req, res, next) => {
     });
 
     // Fetch reviews for the item
-    const reviews = await Review.find({ item: itemId }).populate('posted_by');
+    const reviews = await Review.find({ item: itemId }).populate({ path: 'posted_by', select: 'name' });
 
     if (reviews.length > 0) {
         reviews.forEach((review) => {
@@ -113,6 +113,7 @@ exports.getItem = catchAsync(async (req, res, next) => {
         sales: totalSales,
         amount: totalAmount,
         item: updatedItem,
+        reviews
     });
 });
 
