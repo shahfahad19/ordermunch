@@ -163,29 +163,28 @@ const OrderList = (props) => {
                                                 <td onClick={() => openOrder(order._id)}>{order.placed_by.name}</td>
                                                 <td onClick={() => openOrder(order._id)}>{order.items_count}</td>
                                                 <td onClick={() => openOrder(order._id)}>MYR {order.amount}</td>
-                                                {order.status !== 'Completed' && (
-                                                    <td onClick={() => openOrder(order._id)}>
-                                                        <p
-                                                            className={`px-2 py-1 text-center rounded ${
-                                                                order.status === 'Pending'
-                                                                    ? 'bg-yellow-500 text-white'
-                                                                    : order.status === 'Confirmed'
-                                                                    ? 'bg-green-500 text-white'
-                                                                    : order.status === 'Preparing'
-                                                                    ? 'bg-blue-500 text-white'
-                                                                    : order.status === 'Dispatched'
-                                                                    ? 'bg-indigo-500 text-white'
-                                                                    : order.status === 'Completed'
-                                                                    ? 'bg-green-700 text-white'
-                                                                    : order.status === 'Cancelled'
-                                                                    ? 'bg-red-500 text-white'
-                                                                    : 'bg-gray-400 text-gray-800'
-                                                            }`}
-                                                        >
-                                                            {order.status}
-                                                        </p>
-                                                    </td>
-                                                )}
+
+                                                <td onClick={() => openOrder(order._id)}>
+                                                    <p
+                                                        className={`px-2 py-1 text-center rounded ${
+                                                            order.status === 'Pending'
+                                                                ? 'bg-yellow-500 text-white'
+                                                                : order.status === 'Confirmed'
+                                                                ? 'bg-green-500 text-white'
+                                                                : order.status === 'Preparing'
+                                                                ? 'bg-blue-500 text-white'
+                                                                : order.status === 'Dispatched'
+                                                                ? 'bg-indigo-500 text-white'
+                                                                : order.status === 'Completed'
+                                                                ? 'bg-green-700 text-white'
+                                                                : order.status === 'Cancelled'
+                                                                ? 'bg-red-500 text-white'
+                                                                : 'bg-gray-400 text-gray-800'
+                                                        }`}
+                                                    >
+                                                        {order.status}
+                                                    </p>
+                                                </td>
                                                 <td>
                                                     <UpdateOrderBtn order={order} updateOrder={setUpdatedOrder} />
                                                 </td>
