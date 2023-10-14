@@ -103,7 +103,9 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     };
 
     // Create the order
-    const order = await Order.create(orderData).populate({
+    const order = await Order.create(orderData);
+
+    const newOrder = await Order.findById(order._id).populate({
         path: 'items.item', populate: {
             path: 'restaurant', model: 'Restaurant'
         }
@@ -111,7 +113,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
         status: 'success',
-        order,
+        order: newOrder,
     });
 });
 
