@@ -174,9 +174,16 @@ exports.checkOutCart = catchAsync(async (req, res, next) => {
     if (!user) {
         return next(new AppError('User not found', 404));
     }
+
+    if (!user.phone || !user.address)
+        return next(new AppError('Update your contact details before placing order', 400));
+
+
     if (user.cart.length === 0) {
         return next(new AppError('No items found in cart', 400));
     }
+
+
 
     req.body.items = user.cart;
 
