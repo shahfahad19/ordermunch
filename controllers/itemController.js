@@ -6,23 +6,6 @@ const Order = require('../models/orderModel');
 const mongoose = require('mongoose');
 const Review = require('../models/reviewModel');
 
-// exports.getAllItems = catchAsync(async (req, res) => {
-//     const limit = req.query.limit || 30;
-//     const features = new APIFeatures(Item.find(), req.query).filter().sort().limit().paginate();
-//     const items = await features.query.populate('restaurant');
-
-//     const totalCount = await Item.countDocuments();
-//     const pages = Math.ceil(totalCount / limit);
-
-//     res.status(200).json({
-//         status: 'success',
-//         pages,
-//         count: totalCount,
-//         results: items.length,
-//         items,
-//     });
-// });
-
 exports.getAllItems = catchAsync(async (req, res) => {
     const limit = req.query.limit || 30;
     const features = new APIFeatures(Item.find(), req.query).filter().sort().limit().paginate();
